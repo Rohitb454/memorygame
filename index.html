@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Number Game</title>
+	<link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+	<h1>Number Game</h1>
+	<p>Enter a number between 1 and 100:</p>
+	<input type="number" id="user-input">
+	<button onclick="checkNumber()">Check</button>
+	<p id="output"></p>
+
+	<table>
+		<tbody id="table-body">
+			<!-- Table cells will be generated dynamically here -->
+		</tbody>
+	</table>
+
+	<script>
+		const numberArray = [];
+		const tableBody = document.getElementById('table-body');
+		const userInput = document.getElementById('user-input');
+		const output = document.getElementById('output');
+
+		userInput.addEventListener('keyup', function(event) {
+			if (event.keyCode === 13) {
+				checkNumber();
+			}
+		});
+
+		function checkNumber() 
+        {
+			const inputNumber = parseInt(userInput.value);
+			if (isNaN(inputNumber) || inputNumber < 1 || inputNumber > 100) {
+				output.textContent = 'Invalid input. Please enter a number between 1 and 100.';
+                playErrorSound();
+			} else if (numberArray.includes(inputNumber)) {
+				output.textContent = 'Number already added to array.';
+				playErrorSound();
+			} else {
+				numberArray.push(inputNumber);
+				output.textContent = 'Number added to array.';
+			}
+			userInput.value = '';
+			updateTable();
+		}
+
+		function addNumberToTable(number) 
+        {
+			if (numberArray.includes(number)) {
+				return;
+			}
+			numberArray.push(number);
+			updateTable();
+		}
+
+		function updateTable() 
+        {
+			tableBody.innerHTML = ''; // Clear the table body
+
+			const tableSize = 10; // Number of rows and columns in the table
+			let cellIndex = 1;
+
+			for (let i = 0; i < tableSize; i++) {
+				const row = document.createElement('tr');
+				for (let j = 0; j < tableSize; j++) {
+					const cell = document.createElement('td');
+					cell.onclick = function() {
+						addNumberToTable(cellIndex);
+					};
+					if (numberArray.includes(cellIndex)) {
+						cell.textContent = cellIndex;
+					}
+					row.appendChild(cell);
+					cellIndex++;
+				}
+				tableBody.appendChild(row);
+			}
+		}
+
+		function playErrorSound() 
+        {
+			const audio = new Audio('error.mp3');
+			audio.play();
+		}
+
+		updateTable();
+	</script>
+</body>
+</html>
