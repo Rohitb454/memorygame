@@ -29,25 +29,24 @@
 			}
 		});
 
-		function checkNumber() 
-        {
+		function checkNumber() {
 			const inputNumber = parseInt(userInput.value);
 			if (isNaN(inputNumber) || inputNumber < 1 || inputNumber > 100) {
 				output.textContent = 'Invalid input. Please enter a number between 1 and 100.';
-                playErrorSound();
+				playErrorSound();
 			} else if (numberArray.includes(inputNumber)) {
 				output.textContent = 'Number already added to array.';
 				playErrorSound();
 			} else {
 				numberArray.push(inputNumber);
 				output.textContent = 'Number added to array.';
+				playCorrectSound();
 			}
 			userInput.value = '';
 			updateTable();
 		}
 
-		function addNumberToTable(number) 
-        {
+		function addNumberToTable(number) {
 			if (numberArray.includes(number)) {
 				return;
 			}
@@ -55,8 +54,7 @@
 			updateTable();
 		}
 
-		function updateTable() 
-        {
+		function updateTable() {
 			tableBody.innerHTML = ''; // Clear the table body
 
 			const tableSize = 10; // Number of rows and columns in the table
@@ -79,9 +77,13 @@
 			}
 		}
 
-		function playErrorSound() 
-        {
-			const audio = new Audio('error.mp3');
+		function playErrorSound() {
+			const audio = new Audio('error.mp3'); // Replace 'error.mp3' with the path to your error sound file
+			audio.play();
+		}
+
+		function playCorrectSound() {
+			const audio = new Audio('correct.mp3'); // Replace 'correct.mp3' with the path to your correct sound file
 			audio.play();
 		}
 
